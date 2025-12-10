@@ -13,3 +13,4 @@ qrcode==7.4.2
 requests==2.31.0
 twilio==8.10.0
 cryptography==41.0.7
+psycopg2-binary==2.9.9

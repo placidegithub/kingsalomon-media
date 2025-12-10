@@ -12,6 +12,13 @@ from app import app, db
 project_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, project_dir)
 
+# Handle database URL conversion for PostgreSQL (common in free hosting)
+database_url = os.environ.get('DATABASE_URL', 'sqlite:///academy_media.db')
+# Convert postgres:// to postgresql:// (for compatibility)
+if database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+
 # Initialize database
 with app.app_context():
     db.create_all()
@@ -24,10 +31,22 @@ with app.app_context():
             username='admin',
             email='admin@kingsalomon.ac.rw',
             full_name='System Administrator',
-            role='admin'
+            role='admin',
+            is_verified=True,
+            approval_status='approved'
         )
         admin.set_password('admin123')
         db.session.add(admin)
+        db.session.commit()
+        print("Admin user created: username='admin', password='admin123'")
+    else:
+        # Ensure admin has correct role and status
+        if admin.role != 'admin':
+            admin.role = 'admin'
+        if getattr(admin, 'approval_status', 'approved') != 'approved':
+            admin.approval_status = 'approved'
+        if not admin.is_verified:
+            admin.is_verified = True
         db.session.commit()
 
 # Create upload directories

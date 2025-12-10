@@ -1,0 +1,28 @@
+# Deployment Information
+
+## Your SECRET_KEY
+Check .env.template file for your generated SECRET_KEY
+
+## Required Environment Variables for Render:
+1. FLASK_ENV=production
+2. SECRET_KEY=(from .env.template)
+3. DATABASE_URL=(from Render database - Internal URL)
+4. PORT=10000
+
+## Build Command:
+pip install -r requirements.txt
+
+## Start Command:
+gunicorn --bind 0.0.0.0:$PORT wsgi:app
+
+## Default Admin Account:
+Username: admin
+Password: admin123
+⚠️ CHANGE THIS IMMEDIATELY AFTER FIRST LOGIN!
+
+## Next Steps:
+1. Push code to GitHub (see COMPLETE-BEGINNER-GUIDE.md)
+2. Create database on Render
+3. Create web service on Render
+4. Set environment variables
+5. Deploy!

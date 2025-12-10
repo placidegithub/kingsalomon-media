@@ -22,8 +22,12 @@ app = Flask(__name__)
 # Load configuration from environment variables
 app.config['SECRET_KEY'] = os.environ.get(
     'SECRET_KEY', 'king-salomon-academy-2024')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    'DATABASE_URL', 'sqlite:///academy_media.db')
+# Handle database URL conversion for PostgreSQL (common in free hosting)
+database_url = os.environ.get('DATABASE_URL', 'sqlite:///academy_media.db')
+# Convert postgres:// to postgresql:// (for compatibility)
+if database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.environ.get('UPLOAD_FOLDER', 'static/uploads')
 app.config['MAX_CONTENT_LENGTH'] = int(

@@ -1,0 +1,48 @@
+# Quick Commands for Your Deployment
+
+## Step 1: Git Commands (Run in Command Prompt)
+
+cd "C:\xampp\htdocs\King Salomon Academy System"
+
+git config --global user.name "kingsalomon"
+git config --global user.email "placidehenry0@gmail.com"
+
+git add .
+git commit -m "Ready for deployment to Render"
+
+git remote add origin https://github.com/kingsalomon/kingsalomon-academy.git
+
+git branch -M main
+
+git push -u origin main
+
+## Step 2: Your Render Settings
+
+Service Name: kingsalomon-academy
+Region: Frankfurt (EU Central) or Ireland (EU West)
+Build Command: pip install -r requirements.txt
+Start Command: gunicorn --bind 0.0.0.0:$PORT wsgi:app
+
+## Step 3: Environment Variables (Set in Render)
+
+FLASK_ENV=production
+SECRET_KEY=(from .env.template file)
+DATABASE_URL=(from Render database - Internal URL)
+PORT=10000
+
+## Step 4: Your App URL
+
+https://kingsalomon-academy.onrender.com
+
+## Step 5: Admin Login
+
+Username: admin
+Password: admin123
+⚠️ CHANGE THIS IMMEDIATELY!
+
+## Useful Commands for Updates
+
+git add .
+git commit -m "Your update message"
+git push
+
